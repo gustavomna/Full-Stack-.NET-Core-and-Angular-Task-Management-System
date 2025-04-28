@@ -7,5 +7,4 @@ public sealed record CreateTaskCommand(
     string Title,
     string Description,
     DateTime? DueDate,
-    Priority Priority,
-    Guid UserId) : ICommand<Guid>;
+    Priority Priority) : ICommand<Guid>;

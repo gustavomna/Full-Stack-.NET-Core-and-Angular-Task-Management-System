@@ -23,6 +23,11 @@ internal sealed class CreateTaskCommandHandler(
             UserId = userContext.UserId
         };
 
+        if (task.UserId != userContext.UserId)
+        {
+            return (Result<Guid>)Result.Failure(TaskErrors.Unauthorized());
+        }
+
         task.Raise(new TaskCreatedDomainEvent(task.Id));
 
         taskRepository.Add(task);
