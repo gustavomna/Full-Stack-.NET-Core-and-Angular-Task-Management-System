@@ -1,0 +1,29 @@
+.task-list-container {
+    margin-bottom: 2rem;
+  }
+  
+  .task-list {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  table {
+    margin-bottom: 0;
+  }
+  
+  thead {
+    background-color: #f8f9fa;
+  }
+  
+  .btn-group {
+    white-space: nowrap;
+  }
+  
+  .dropdown-item {
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }

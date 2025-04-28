@@ -1,0 +1,36 @@
+.task-detail-container {
+    margin-bottom: 2rem;
+  }
+  
+  .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 1.25rem;
+  }
+  
+  .description-box {
+    background-color: #f8f9fa;
+    min-height: 120px;
+  }
+  
+  .white-space-pre-line {
+    white-space: pre-line;
+  }
+  
+  .dropdown-item {
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #f8f9fa;
+    }
+    
+    &.active {
+      background-color: #0d6efd;
+      color: white;
+    }
+  }

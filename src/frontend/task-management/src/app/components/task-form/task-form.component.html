@@ -1,0 +1,113 @@
+<div class="card">
+    <div class="card-header">
+      <h2>{{ isEditMode ? 'Editar' : 'Nova' }} Tarefa</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <!-- Mensagem de erro -->
+        <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+          {{ errorMessage }}
+        </div>
+        
+        <!-- Campo de título -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Título*</label>
+          <input 
+            type="text" 
+            id="title" 
+            class="form-control" 
+            formControlName="title" 
+            [ngClass]="{'is-invalid': submitted && f['title'].errors}"
+          >
+          <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
+            <div *ngIf="f['title'].errors['required']">Título é obrigatório</div>
+            <div *ngIf="f['title'].errors['minlength']">Título deve ter pelo menos 3 caracteres</div>
+            <div *ngIf="f['title'].errors['maxlength']">Título não pode ter mais de 100 caracteres</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="description" class="form-label">Descrição*</label>
+          <textarea 
+            id="description" 
+            class="form-control" 
+            formControlName="description" 
+            rows="4"
+            [ngClass]="{'is-invalid': submitted && f['description'].errors}"
+          ></textarea>
+          <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+            <div *ngIf="f['description'].errors['required']">Descrição é obrigatória</div>
+            <div *ngIf="f['description'].errors['minlength']">Descrição deve ter pelo menos 10 caracteres</div>
+            <div *ngIf="f['description'].errors['maxlength']">Descrição não pode ter mais de 500 caracteres</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="dueDate" class="form-label">Data de vencimento*</label>
+          <input 
+            type="date" 
+            id="dueDate" 
+            class="form-control" 
+            formControlName="dueDate" 
+            [min]="minDate"
+            [ngClass]="{'is-invalid': submitted && f['dueDate'].errors}"
+          >
+          <div *ngIf="submitted && f['dueDate'].errors" class="invalid-feedback">
+            <div *ngIf="f['dueDate'].errors['required']">Data de vencimento é obrigatória</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="priority" class="form-label">Prioridade*</label>
+            <select 
+                id="priority" 
+                class="form-select" 
+                formControlName="priority"
+                [ngClass]="{'is-invalid': submitted && f['priority'].errors}"
+            >
+                <option [value]="0">Normal</option>
+                <option [value]="1">Low</option>
+                <option [value]="2">Medium</option>
+                <option [value]="3">High</option>
+                <option [value]="4">Top</option>
+            </select>
+            <div *ngIf="submitted && f['priority'].errors" class="invalid-feedback">
+                <div *ngIf="f['priority'].errors['required']">Prioridade é obrigatória</div>
+            </div>
+        </div>
+        
+        <div class="mb-3" *ngIf="isEditMode">
+            <label for="status" class="form-label">Status*</label>
+            <select 
+              id="status" 
+              class="form-select" 
+              formControlName="status"
+              [ngClass]="{'is-invalid': submitted && f['status'].errors}"
+            >
+              <option [value]="0">Open</option>
+              <option [value]="1">InProgress</option>
+              <option [value]="2">Completed</option>
+            </select>
+            <div *ngIf="submitted && f['status'].errors" class="invalid-feedback">
+              <div *ngIf="f['status'].errors['required']">Status é obrigatório</div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            Cancelar
+          </button>
+          
+          <div>
+            <button type="button" class="btn btn-outline-secondary me-2" (click)="resetForm()">
+              Limpar
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                {{ isEditMode ? 'Atualizar' : 'Criar' }} Tarefa
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

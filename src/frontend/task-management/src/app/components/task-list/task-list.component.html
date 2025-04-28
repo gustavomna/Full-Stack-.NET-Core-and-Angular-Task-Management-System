@@ -1,0 +1,66 @@
+<div class="task-list-container">
+    <app-task-filter (filterChanged)="onFilterChanged($event)"></app-task-filter>
+    
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary" (click)="createTask()">
+        <i class="bi bi-plus-circle me-2"></i>New Task
+      </button>
+    </div>
+    
+    <div *ngIf="loading" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading tasks...</p>
+    </div>
+    
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    
+    <div *ngIf="!loading && tasks.length > 0" class="task-list">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Due Date</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let task of tasks" [ngClass]="{'table-danger': isOverdue(task.dueDate)}">
+              <td>{{ task.title }}</td>
+              <td>{{ task.dueDate | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <span [ngClass]="getPriorityClass(task.priority)">{{ priorityLabels[task.priority] }}</span>
+              </td>
+              <td>
+                <span [ngClass]="getStatusClass(task.status)">{{ statusLabels[task.status] }}</span>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-outline-primary" (click)="viewTask(task.id)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="editTask(task.id)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div *ngIf="!loading && tasks.length === 0" class="alert alert-info">
+      <p class="mb-0">No tasks found. Create a new task or adjust your search filters.</p>
+    </div>
+  </div>
