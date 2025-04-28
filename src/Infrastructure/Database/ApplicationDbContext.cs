@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Data;
+using Domain.TaskItems;
 using Domain.Users;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     : DbContext(options), IApplicationDbContext
 {
     public DbSet<User> Users { get; set; }
+
+    public DbSet<TaskItem> Tasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
