@@ -1,23 +1,51 @@
+using Application;
+using HealthChecks.UI.Client;
+using Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
+using Web.Api;
+using Web.Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGenWithAuth();
+
+builder.Services
+    .AddApplication()
+    .AddPresentation()
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwaggerWithUi();
+
+    app.ApplyMigrations();
 }
 
-app.UseHttpsRedirection();
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.UseRequestContextLogging();
+
+app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
+
+namespace Web.Api
+{
+    public partial class Program;
+}

@@ -1,8 +1,10 @@
 ﻿using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
+using Domain.Users;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
 using Infrastructure.Database;
+using Infrastructure.Repositories;
 using Infrastructure.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -42,9 +44,11 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(
             options => options
                 .UseSqlServer(connectionString, sqlServerOptions =>
-                    sqlServerOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default)));
+                    sqlServerOptions.CommandTimeout(3600)));
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
