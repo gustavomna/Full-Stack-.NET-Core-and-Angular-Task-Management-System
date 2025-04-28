@@ -1,20 +1,18 @@
 ﻿namespace SharedKernel;
 
-public abstract class Entity<TEntityId> : IEntity
+public abstract class Entity
 {
-    private readonly List<IDomainEvent> _domainEvents = new();
+    private readonly List<IDomainEvent> _domainEvents = [];
 
-    protected Entity(TEntityId id)
+    public List<IDomainEvent> DomainEvents => [.. _domainEvents];
+
+    public void ClearDomainEvents()
     {
-        Id = id;
+        _domainEvents.Clear();
     }
 
-    protected Entity() { }
-
-    public TEntityId Id { get; init; }
-
-    public void ClearDomainEvents() => _domainEvents.Clear();
-    public IReadOnlyList<IDomainEvent> GetDomainEvents() => _domainEvents.ToList();
-    protected void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
-
+    public void Raise(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
 }

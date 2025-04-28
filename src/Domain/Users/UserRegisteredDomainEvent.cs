@@ -1,5 +1,4 @@
-﻿
-using SharedKernel;
+﻿using SharedKernel;
 
 namespace Domain.Users;
 
